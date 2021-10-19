@@ -14,14 +14,14 @@ public class LoginUtil {
 		logOut(request);
 		HttpSession session = request.getSession(true);
 		session.setMaxInactiveInterval(45);
-		session.setAttribute("password", password);
+		session.setAttribute("anine", "anine");
 		session.setAttribute("cartSession", new Cart());
 
 	}
 	
 	public static boolean erInnlogget(HttpServletRequest request) {
 		HttpSession session = request.getSession(false);
-		return session != null && session.getAttribute("password") != null;
+		return session != null && session.getAttribute("anine") != null;
 	}
 	
 	public static void logOut(HttpServletRequest request) {

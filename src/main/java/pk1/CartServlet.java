@@ -23,7 +23,7 @@ public class CartServlet extends HttpServlet {
 			HttpSession session = request.getSession(true);
 			Cart cart=(Cart) session.getAttribute("cartSession");
 			PrintWriter out = response.getWriter();
-			response.setContentType("text/html; charset=ISO-8859-1");
+			//response.setContentType("text/html; charset=ISO-8859-1");
 			
 			out.println(HTMLhead());
 			out.println("<p>Min Handleliste</p>");
@@ -34,9 +34,8 @@ public class CartServlet extends HttpServlet {
 			
 			
 			for(String str:cart.getLinkedList()) {
-				out.println("<p>"+str+"</p>");
-//				out.println("<input type=\"hidden\" name=\"slettElement\" value=\""+str+"\"/>");
-//				out.println("<button type=\"submit\" value=\"slett\" name=\"slett\">slett</button>");
+				out.println("<p>- "+str);
+				out.println("<button type=\"submit\" value=\""+str+"\" name=\"slett\">x</button>"+"</p>");
 				
 
 				
@@ -58,16 +57,15 @@ public class CartServlet extends HttpServlet {
 			HttpSession session = request.getSession(true);
 			Cart cart= (Cart) session.getAttribute("cartSession");
 			String objektInn = request.getParameter("nyttElement");
-			//String objektUt =  request.getParameter("slettElement");
-			if(objektInn!=null) {
-				if(!objektInn.equals(""))
+			String objektUt =  request.getParameter("slett");
+			if(objektInn!=null&&!objektInn.equals("")) {
 				cart.add(objektInn);
+			}else if(objektUt!=null) {
+				if(!objektUt.equals("")&&!cart.isEmpty()) 
+						cart.remove(objektUt);
+				
 			}
-//			if(objektUt!=null) {
-//				if(!objektInn.equals("")&&!cart.isEmpty()) 
-//						cart.remove(objektUt);
-//				
-//			}
+			
 			
 			response.sendRedirect("cartServlet");
 			
