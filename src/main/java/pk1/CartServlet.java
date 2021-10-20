@@ -11,12 +11,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import utils.*;
+import org.apache.cxf.transport.commons_text.StringEscapeUtils;
 
 
 @WebServlet("/cartServlet")
 public class CartServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		
 		if (!LoginUtil.erInnlogget(request)) {
 			response.sendRedirect("login");
 		} else {
@@ -35,7 +36,7 @@ public class CartServlet extends HttpServlet {
 			
 			for(String str:cart.getLinkedList()) {
 				out.println("<p>- "+str);
-				out.println("<button type=\"submit\" value=\""+str+"\" name=\"slett\">x</button>"+"</p>");
+				out.println("<button type=\"submit\" value=\""+str+"\" name=\"slett\"> x </button>"+"</p>");
 				
 
 				
@@ -56,8 +57,10 @@ public class CartServlet extends HttpServlet {
 		} else {
 			HttpSession session = request.getSession(true);
 			Cart cart= (Cart) session.getAttribute("cartSession");
-			String objektInn = request.getParameter("nyttElement");
-			String objektUt =  request.getParameter("slett");
+			String objektInn = StringEscapeUtils.escapeHtml4(request.getParameter("nyttElement"));
+			String objektUt =  StringEscapeUtils.escapeHtml4(request.getParameter("slett"));
+			
+			
 			if(objektInn!=null&&!objektInn.equals("")) {
 				cart.add(objektInn);
 			}else if(objektUt!=null) {

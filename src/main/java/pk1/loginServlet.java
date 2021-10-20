@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.cxf.transport.commons_text.StringEscapeUtils;
+
 @WebServlet("/login")
 public class loginServlet extends HttpServlet {
 
@@ -32,8 +34,8 @@ public class loginServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String password = request.getParameter("passord");
-		if (Validator.isValidPassword(password)) {    // passord er riktig
+		String password = StringEscapeUtils.escapeHtml4(request.getParameter("passord"));
+		if (Validator.isValidPassword(password)) {    // passord er riktig		
 			LoginUtil.logIn(request, password);
 			response.sendRedirect("cartServlet");
 		} else {
